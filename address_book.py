@@ -53,7 +53,9 @@ class _Record(UserDict):
 
 
 class _PersistantBook(UserDict):
-    def __init__(self, filename="address_book_data.csv", fields=("name", "phone", "birthday")):
+    def __init__(
+        self, filename="address_book_data.csv", fields=("name", "phone", "birthday")
+    ):
         super().__init__()
         self.filename = filename
         self.fields = fields
@@ -66,7 +68,8 @@ class _PersistantBook(UserDict):
             self.__csv_processor = csv.DictReader(self.__dict_file_handle)
             for row in self.__csv_processor:
                 self.data[row[self.__key_field]] = _Record(
-                    *(row[field] for field in self.fields))
+                    *(row[field] for field in self.fields)
+                )
         except FileNotFoundError:
             self.__dict_file_handle = open(self.filename, "w")
         return self
@@ -82,11 +85,13 @@ class _PersistantBook(UserDict):
                 self.__dict_file_handle.truncate(0)
                 self.__dict_file_handle.seek(0)
                 self.__csv_processor = csv.DictWriter(
-                    self.__dict_file_handle, fieldnames=self.fields)
+                    self.__dict_file_handle, fieldnames=self.fields
+                )
                 self.__csv_processor.writeheader()
                 for record in self.data.values():
                     self.__csv_processor.writerow(record.data)
             return result
+
         return wrapper
 
 
@@ -120,7 +125,8 @@ class AddressBook(_PersistantBook):
         for name, record in self.data.items():
             if record.birthday:
                 stored_birthdays.append(
-                    {"name": name, "birthday": record.birthday.value})
+                    {"name": name, "birthday": record.birthday.value}
+                )
         return get_birthdays_per_week(stored_birthdays)
 
     @_PersistantBook.update
@@ -168,7 +174,6 @@ if __name__ == "__main__":
     with AddressBook() as book:
         from faker import Faker
         from random import randrange
-        from datetime import datetime
 
         # Add test data to the book
         fake = Faker()
@@ -182,8 +187,6 @@ if __name__ == "__main__":
             print(book.change_phone(name, str(randrange(1000000000, 9999999999))))
             print(book.get_phone(name))
             print(book.get_birthday(name))
-            contact_birthday = datetime.strptime(
-                book.get_birthday(name), "%d.%m.%Y").date()
 
     with AddressBook() as book:
         # Print all stored records from the book

@@ -45,8 +45,7 @@ def get_birthdays_per_week(users):
         else:
             birthday_this_year = birthday.replace(year=current_date.year)
         if birthday_this_year < current_date:
-            birthday_this_year = birthday_this_year.replace(
-                year=current_date.year + 1)
+            birthday_this_year = birthday_this_year.replace(year=current_date.year + 1)
         delta_days = (birthday_this_year - current_date).days
         if delta_days < 7:
             name = user["name"]
@@ -69,6 +68,7 @@ if __name__ == "__main__":
 
     fake = Faker()
     test_data = [
-        {"name": fake.name(), "birthday": fake.date_time().strftime("%d.%m.%Y")} for _ in range(500)
+        {"name": fake.name(), "birthday": fake.date_time().strftime("%d.%m.%Y")}
+        for _ in range(500)
     ]
     print(get_birthdays_per_week(test_data))

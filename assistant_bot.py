@@ -27,6 +27,7 @@ def input_error(func):
             return "Contact doesn't exist."
         except:
             return "Oops! Something wrong happened."
+
     return wrapper
 
 
@@ -34,6 +35,7 @@ def parse_input(user_input):
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
     return cmd, *args
+
 
 # Command processors section
 
